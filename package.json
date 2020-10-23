@@ -1,0 +1,23 @@
+{
+  "name": "y",
+  "version": "1.0.0",
+  "description": "In this project, we will be creating an e-commerce website that is designed to sell diapers.",
+  "main": "./server/server.js",
+  "scripts":{
+    "test": "echo \"error here\" && exit 1",
+    "start": "node server.js"
+    },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jalbert12485/bear-bottom.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jalbert12485/bear-bottom/issues"
+  },
+  "homepage": "https://github.com/jalbert12485/bear-bottom#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
