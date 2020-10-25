@@ -19,8 +19,21 @@ $(window).resize(function(){
 });
 
 
+
 function createNavbar(){
     $("#navbar").empty();
+    let newToggle=$("<button>");
+    newToggle.attr("type","button");
+    newToggle.addClass("navbar-toggler mr-2");
+    newToggle.attr("data-toggle","modal");
+    newToggle.attr("data-target","#options-modal");
+    newToggle.attr("aria-controls","navbarToggleExternalContent");
+    newToggle.attr("aria-expanded","false");
+    newToggle.attr("aria-label","Toggle navigation");
+    let newSpan=$("<span>");
+    newSpan.addClass("navbar-toggler-icon");
+
+    newToggle.append(newSpan);
     let newLink=$("<a>");
     newLink.addClass("navbar-brand brand-font");
     newLink.attr("href","./index.html");
@@ -42,12 +55,54 @@ function createNavbar(){
     newIcon.attr("style","font-size: 36px; color: white");
     newIcon.attr("href","./cart.html");
 
+    if(currentNameDisplay){
+    $("#navbar").append(newToggle);    
     $("#navbar").append(newLink);
     $("#navbar").append(newIcon);
+    }else{
+        $("#navbar").append(newLink);
+        $("#navbar").append(newToggle);
+        $("#navbar").append(newIcon);
+    }
 
 
 }
 
 
+
+
 createNavbar();
 
+
+function fillCategoryModal(){
+
+
+let diapers={
+    name: "Diapers",
+    subcategories: ["All in ones", "Covers", "Pre-folds", "New Born"]
+}
+let wipes={
+    name: "Wipes",
+    subcategories: ["Large","Small"]
+}
+let categories=[diapers, wipes];
+
+for(let i=0; i < categories.length; i++){
+    let newCat=$("<h5>");
+    newCat.text(categories[i].name);
+    $("#modal-body").append(newCat);
+
+
+    for(let j=0; j< categories[i].subcategories.length; j++){
+        let newLi=$("<p>");
+        newLi.text(categories[i].subcategories[j]);
+        $("#modal-body").append(newLi);
+    }
+  
+}
+
+
+
+}
+
+fillCategoryModal();
