@@ -7,7 +7,7 @@ function createNavbar(){
     newLink.attr("href","./index.html");
     newLink.text("Bear Bottom Diapers");
     let newImg=$("<img>");
-    newImg.attr("src","../diaper-bear.png");
+    newImg.attr("src","./diaper-bear.png");
     newImg.addClass("d-inline-block-top mr-4");
     newImg.attr("style","width: 40px; height: 40px");
     newImg.attr("alt","Diaper Bear");
