@@ -9,4 +9,24 @@
     background-color: #419D78;
 }
 
+#product-container{
+    position: relative;
+    background-color: #92B4F4;
+}
+
+#product-background{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.card{
+    height: 100%;
+}
+
+#space{
+    padding: 5vh;
+}
+
 /* colors #093824  #92B4F4 #419D78 #1B4079 */

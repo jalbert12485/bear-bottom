@@ -1,11 +1,34 @@
+function displayFullName(){
+    if(window.screen.width < 500){
+        return false;
+    }else{
+        return true;
+    }  
+}
+
+let currentNameDisplay=displayFullName();
+
+// When the window is resized, this checks if we've changed from small to large or vice-versa.  If we did, it renders the chart again.  In the chart, the labels are only rendered when the screen is large as according to the above function.
+
+$(window).resize(function(){
+    
+    if(displayFullName() != currentNameDisplay){
+        currentNameDisplay=displayFullName();
+        createNavbar();
+    }
+});
+
 
 function createNavbar(){
-    let newNav=$("<nav>");
-    newNav.addClass("navbar navbar-dark");
+    $("#navbar").empty();
     let newLink=$("<a>");
     newLink.addClass("navbar-brand brand-font");
     newLink.attr("href","./index.html");
-    newLink.text("Bear Bottom Diapers");
+    if(currentNameDisplay){
+        newLink.text("Bear Bottom Diapers");
+    }else{
+        newLink.text("Bear Bottom");
+    }
     let newImg=$("<img>");
     newImg.attr("src","./diaper-bear.png");
     newImg.addClass("d-inline-block-top mr-4");
@@ -19,13 +42,12 @@ function createNavbar(){
     newIcon.attr("style","font-size: 36px; color: white");
     newIcon.attr("href","./cart.html");
 
-    newNav.append(newLink);
-    newNav.append(newIcon);
-    
+    $("#navbar").append(newLink);
+    $("#navbar").append(newIcon);
 
-    $("body").prepend(newNav);
 
 }
 
 
 createNavbar();
+
