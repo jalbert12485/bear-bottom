@@ -14,9 +14,10 @@ function createNavbar(){
 
     newLink.prepend(newImg);
     
-    let newIcon=$("<i>");
+    let newIcon=$("<a>");
     newIcon.addClass("fa fa-shopping-cart ml-auto");
-    newIcon.attr("style","font-size: 36px");
+    newIcon.attr("style","font-size: 36px; color: white");
+    newIcon.attr("href","./cart.html");
 
     newNav.append(newLink);
     newNav.append(newIcon);
