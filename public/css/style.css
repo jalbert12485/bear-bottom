@@ -21,12 +21,19 @@
     width: 100%;
 }
 
+/* #checkout{
+    position: relative;
+    background-color: white;
+    z-index: 1;
+} */
+
 .card{
     height: 100%;
 }
 
 #space{
     padding: 5vh;
+    
 }
 
 
