@@ -1,6 +1,22 @@
 const express = require("express");
 const path=require("path");
 const fs=require("fs");
+const Wipe=require("./node/Wipe")
+var mysql = require("mysql");
+
+var connection = mysql.createConnection({
+  host: "localhost",
+
+  // Your port; if not 3306
+  port: 3306,
+
+  // Your username
+  user: "root",
+
+  // Your password
+  password: "root",
+  database: "products_db"
+});
 
 
 const app = express();
@@ -25,6 +41,39 @@ app.get("/*", function(req, res) {
     res.sendFile(path.join(__dirname, "/public/index.html"));
 });
 
+
+
+app.post("/admin/productadd", function(req, res) {
+
+let sent=req.body;
+
+let wipe1=new Wipe(sent.name, sent.short, sent.long, sent.imgSrc, sent.imgAlt, sent.inventory, sent.dimensions);
+
+connection.connect(function(err) {
+  if (err) throw err;
+  console.log("connected as id " + connection.threadId + "\n");
+  createProduct(wipe1);
+  res.end();
+});
+
+
+
+
+});
+
+
+
+function createProduct(product){
+  connection.query(
+    "INSERT INTO products SET ?",
+    product,
+    function(err, res) {
+      if (err) throw err;
+    
+      connection.end();
+    });
+
+}
 // Listener
 // ===========================================================
 app.listen(PORT, function() {

@@ -4,16 +4,9 @@ class Product{
         this.name=String(name);
         this.shortdesc=String(shortdesc);
         this.longdesc=String(longdesc);
-        this.image={
-            "alt": String(imagealt),
-            "src": String(imagesrc)
-        },
-        this.category=[];
-        if(Array.isArray(category)){
-        for(let i=0; i<category.length; i++){
-            this.category.push(category[i]);
-        }}
-
+        this.imageAlt=String(imagealt);
+        this.imageSrc=String(imagesrc);
+        this.category=String(category);
         this.inventory=Number(inventory),
         this.addtocart=function(){
 
