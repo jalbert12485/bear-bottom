@@ -7,19 +7,8 @@ class Product{
         this.imageAlt=String(imagealt);
         this.imageSrc=String(imagesrc);
         this.category=String(category);
-        this.inventory=Number(inventory),
-        this.addtocart=function(){
-
-        },
-        this.processOrder=function(){
-            this.inventory --;
-        },
-        this.restock=function(num){
-            this.inventory += num;
-        },
-        this.waste=function(num){
-            this.inventory -= num;
-        }
+        this.inventory=Number(inventory);
+       
 
     }
 

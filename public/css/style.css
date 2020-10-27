@@ -36,5 +36,10 @@
     
 }
 
+#form-container{
+    z-index: 4;
+    background-color: white;
+}
+
 
 /* colors #093824  #92B4F4 #419D78 #1B4079 */
