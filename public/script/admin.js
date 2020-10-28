@@ -2,7 +2,7 @@
 
 $("#create-new-product").on("click",createProductOptions);
 $("#manage-inventory").on("click",function(e){
-  getInfoForInventory("id")});
+  getInfoForInventory("name")});
 
 // Prompts the admin to determine what they would like to do.
 
@@ -85,6 +85,7 @@ function createInventoryDisplay(input){
     newSelect.addClass("form-control");
     newSelect.attr("id","product-view-field");
     for(const value in productList[0]){
+      if(value != "id"){
       let newOption=$("<option>");
       newOption.attr("id","product-view-option");
       newOption.text(value);
@@ -93,7 +94,7 @@ function createInventoryDisplay(input){
         newOption.attr("selected",true);
       }
       newSelect.append(newOption);
-    }
+    }}
     newDiv.append(newSelect);
     newForm.append(newDiv);
     newCol.append(newForm);
