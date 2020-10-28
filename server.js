@@ -51,7 +51,7 @@ app.post("/admin/productadd/diaper", function(req, res) {
 
   let sent=req.body;
   
-  let diaper1=new Diaper(sent.name, sent.short, sent.long, sent.imgSrc, sent.imgAlt, sent.inventory, sent.style, sent.size, sent.print);
+  let diaper1=new Diaper(sent.name, sent.price, sent.short, sent.long, sent.imgSrc, sent.imgAlt, sent.inventory, sent.style, sent.size, sent.print);
   
  
     createProduct(diaper1);
@@ -82,7 +82,7 @@ app.post("/admin/productadd/wipe", function(req, res) {
 
 let sent=req.body;
 
-let wipe1=new Wipe(sent.name, sent.short, sent.long, sent.imgSrc, sent.imgAlt, sent.inventory, sent.dimensions);
+let wipe1=new Wipe(sent.name, sent.price, sent.short, sent.long, sent.imgSrc, sent.imgAlt, sent.inventory, sent.dimensions);
 
 
   createProduct(wipe1);

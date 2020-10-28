@@ -106,7 +106,7 @@ function createInventoryDisplay(input){
       newTable.append(newRow);
   }
 
-  
+
   let newButtonRow=$("<div>");
   newButtonRow.addClass("row");
   let newButtonCol=$("<div>");
@@ -146,7 +146,7 @@ function createInventoryDisplay(input){
 
 
 
-let adminProductInput=[["product-name","Product Name"],["short-descr","Short Description"],["long-descr","Long Description"],["image-src","Image Source"],["image-alt","Image Alt"],["inventory","Inventory"]];
+let adminProductInput=[["product-name","Product Name"],["price","Price"],["short-descr","Short Description"],["long-descr","Long Description"],["image-src","Image Source"],["image-alt","Image Alt"],["inventory","Inventory"]];
 
 let adminDiaperInput=[["size","Size"],["style","Style"],["print","Print"]];
 
@@ -254,6 +254,7 @@ $("#form-submit").on("click", function(event){
 function sendNewWipe(){
   let product={
     name: $("#product-name").val(),
+    price: $("#price").val(),
     short: $("#short-descr").val(),
     long: $("#long-descr").val(),
     imgSrc: $("#image-src").val(),
@@ -277,6 +278,7 @@ function sendNewWipe(){
 function sendNewDiaper(){
   let product={
     name: $("#product-name").val(),
+    price: $("#price").val(),
     short: $("#short-descr").val(),
     long: $("#long-descr").val(),
     imgSrc: $("#image-src").val(),

@@ -5,6 +5,7 @@ USE products_db;
 CREATE TABLE products (
   id INT NOT NULL AUTO_INCREMENT,
   name VARCHAR(45) NULL,
+  price VARCHAR(100) NULL,
   shortDesc VARCHAR(100) NULL,
   longDesc VARCHAR(1000) NULL,
   imageSrc VARCHAR(100) NULL,
