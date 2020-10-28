@@ -1,8 +1,9 @@
 
-$("#create-new-product").on("click",createProdutOptions);
-$("#manage-inventory").on("click",createInventoryOptions);
+$("#create-new-product").on("click",createProductOptions);
+$("#manage-inventory").on("click",function(e){
+  getInfoForInventory("id")});
 
-function createProdutOptions(){
+function createProductOptions(){
   $("#form-container").empty();
   let newH=$("<h3>");
   newH.text("What would you like to do?");
@@ -42,48 +43,78 @@ function createProdutOptions(){
   $("#form-container").append(newDiv);
 }
 
-function createInventoryOptions(){
-  $("#form-container").empty();
-  let newH=$("<h3>");
-  newH.attr("style", "text-align: center;");
-  newH.text("What would you like to do?");
-  newH.addClass("m-4");
-  $("#form-container").append(newH);
+let productList;
 
-  let newDiv=$("<div>");
-  newDiv.addClass("row text-center");
-
-  let newDiv1=$("<div>");
-  newDiv1.addClass("col-md-6");
-  newDiv1.attr("id","restock");
-  newDiv1.on("click",function(){
-    
-  });
-  let newButton1=$("<button>");
-  newButton1.addClass("btn btn-primary");
-  newButton1.text("Restock Product");
-  newButton1.attr("type","button");
-
-  newDiv1.append(newButton1);
-  newDiv.append(newDiv1);
-
-
-  let newDiv2=$("<div>");
-  newDiv2.addClass("col-md-6");
-  newDiv2.attr("id","waste-product");
-  newDiv2.on("click",function(){
-    
-  });
-  let newButton2=$("<button>");
-  newButton2.addClass("btn btn-primary");
-  newButton2.text("Waste Product");
-  newButton2.attr("type","button");
-
-  newDiv2.append(newButton2);
-  newDiv.append(newDiv2);
-
-  $("#form-container").append(newDiv);
+function getInfoForInventory(input){
+$.get("/admin/products",function(data){
+  productList=data;
+})
+ .done(function(){createInventoryDisplay(input)});
 }
+
+function createInventoryDisplay(input){
+  $("#form-container").empty();
+
+
+
+
+    let newH=$("<h3>");
+    newH.text("Product List");
+    newH.attr("style","text-align: center;");
+    $("#form-container").append(newH);
+
+
+
+  let newTable=$("<table>");
+
+    let newRow=$("<tr>");
+    let newCol=$("<th>");
+      newCol.text("Name");
+      newRow.append(newCol);
+      newCol=$("<th>");
+    let  newForm=$("<form>");
+    let  newDiv=$("<div>");
+    newDiv.addClass("form-group");
+    let newSelect=$("<select>");
+    newSelect.addClass("form-control");
+    newSelect.attr("id","product-view-field");
+    for(const value in productList[0]){
+      let newOption=$("<option>");
+      newOption.attr("id","product-view-option");
+      newOption.text(value);
+      newOption.val(value);
+      if(value==input){
+        newOption.attr("selected",true);
+      }
+      newSelect.append(newOption);
+    }
+    newDiv.append(newSelect);
+    newForm.append(newDiv);
+    newCol.append(newForm);
+      newRow.append(newCol);
+    newTable.append(newRow);
+    
+
+  for(let i=0; i< productList.length; i++){
+      newRow=$("<tr>");
+      newCol=$("<td>");
+      newCol.text(productList[i].name);
+      newRow.append(newCol);
+      newCol=$("<td>");
+      newCol.text(productList[i][`${input}`]);
+      newRow.append(newCol);
+      newTable.append(newRow);
+  }
+  
+  $("#form-container").append(newTable);
+  $("#product-view-field").on("change",function(e){
+    createInventoryDisplay(this.value);
+  });
+  
+
+
+}
+
 
 
 

@@ -21,11 +21,9 @@
     width: 100%;
 }
 
-/* #checkout{
-    position: relative;
-    background-color: white;
-    z-index: 1;
-} */
+table, th, td {
+    border: 1px solid black;
+  }
 
 .card{
     height: 100%;

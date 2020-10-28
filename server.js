@@ -15,7 +15,7 @@ var connection = mysql.createConnection({
   user: "root",
 
   // Your password
-  password: "",
+  password: "root",
   database: "products_db"
 });
 
@@ -38,9 +38,7 @@ app.get("/:route", function(req, res) {
 
 
 
-app.get("/*", function(req, res) {
-    res.sendFile(path.join(__dirname, "/public/index.html"));
-});
+
 
 app.post("/admin/productadd/diaper", function(req, res) {
 
@@ -74,6 +72,10 @@ app.post("/admin/productadd/diaper", function(req, res) {
   
   }
 
+
+ 
+  
+
 app.post("/admin/productadd/wipe", function(req, res) {
 
 let sent=req.body;
@@ -85,26 +87,30 @@ connection.connect(function(err) {
   console.log("connected as id " + connection.threadId + "\n");
   createProduct(wipe1);
   res.end();
+
+});
+
 });
 
 
 
 
+app.get("/admin/products", function(req, res) {
+  connection.query("SELECT * FROM products", function(err, response) {
+    if (err) throw err;
+
+    res.json(response);
+    connection.end();
+ 
+
+  });
+});
+
+app.get("/*", function(req, res) {
+  res.sendFile(path.join(__dirname, "/public/index.html"));
 });
 
 
-
-function createProduct(product){
-  connection.query(
-    "INSERT INTO products SET ?",
-    product,
-    function(err, res) {
-      if (err) throw err;
-    
-      connection.end();
-    });
-
-}
 // Listener
 // ===========================================================
 app.listen(PORT, function() {
