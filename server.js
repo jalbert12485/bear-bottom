@@ -36,7 +36,14 @@ app.get("/:route", function(req, res) {
     res.sendFile(path.join(__dirname, `/public/${route}.html`));
 });
 
+connection.connect(function(err) {
+  if (err) {
+    console.error("error connecting: " + err.stack);
+    return;
+  }
 
+  console.log("connected as id " + connection.threadId);
+});
 
 
 
@@ -46,17 +53,13 @@ app.post("/admin/productadd/diaper", function(req, res) {
   
   let diaper1=new Diaper(sent.name, sent.short, sent.long, sent.imgSrc, sent.imgAlt, sent.inventory, sent.style, sent.size, sent.print);
   
-  connection.connect(function(err) {
-    if (err) throw err;
-    console.log("connected as id " + connection.threadId + "\n");
+ 
     createProduct(diaper1);
+    
     res.end();
+    
   });
   
-  
-  
-  
-  });
   
   
   
@@ -66,8 +69,7 @@ app.post("/admin/productadd/diaper", function(req, res) {
       product,
       function(err, res) {
         if (err) throw err;
-      
-        connection.end();
+        
       });
   
   }
@@ -82,13 +84,9 @@ let sent=req.body;
 
 let wipe1=new Wipe(sent.name, sent.short, sent.long, sent.imgSrc, sent.imgAlt, sent.inventory, sent.dimensions);
 
-connection.connect(function(err) {
-  if (err) throw err;
-  console.log("connected as id " + connection.threadId + "\n");
+
   createProduct(wipe1);
   res.end();
-
-});
 
 });
 
@@ -100,7 +98,7 @@ app.get("/admin/products", function(req, res) {
     if (err) throw err;
 
     res.json(response);
-    connection.end();
+ 
  
 
   });

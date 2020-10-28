@@ -105,8 +105,26 @@ function createInventoryDisplay(input){
       newRow.append(newCol);
       newTable.append(newRow);
   }
+
+  
+  let newButtonRow=$("<div>");
+  newButtonRow.addClass("row");
+  let newButtonCol=$("<div>");
+  newButtonCol.addClass("col-md-6");
+  let newButton2=$("<button>");
+  newButton2.attr("type","button");
+  newButton2.text("Restart");
+  newButton2.addClass("btn btn-primary");
+  newButton2.on("click",function(){
+    location.reload();
+  });
+
+  newButtonCol.append(newButton2);
+  newButtonRow.append(newButtonCol);
+
   
   $("#form-container").append(newTable);
+  $("#form-container").append(newButtonCol);
   $("#product-view-field").on("change",function(e){
     createInventoryDisplay(this.value);
   });
@@ -195,12 +213,14 @@ function createInputForm(productType){
   newButton1.on("click", function(event){
     event.preventDefault();
     sendNewWipe();
+    location.reload();
   })
   };
   if(productType=="diaper"){
     newButton1.on("click", function(event){
       event.preventDefault();
       sendNewDiaper();
+      location.reload();
     })
     };
     newCol.append(newButton1);

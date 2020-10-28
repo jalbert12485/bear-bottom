@@ -2,8 +2,8 @@ const Product=require("./Product");
 
 class Wipe extends Product{
 
-    constructor(name, shortdesc, longdesc,imagesrc,imagealt,inventory,dimensions){
-        super(name, shortdesc, longdesc,imagesrc,imagealt,inventory,"Wipe");
+    constructor(name, price, shortdesc, longdesc,imagesrc,imagealt,inventory,dimensions){
+        super(name, price, shortdesc, longdesc,imagesrc,imagealt,inventory,"Wipe");
         this.dimensions=String(dimensions);
     }
 
