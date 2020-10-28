@@ -104,6 +104,20 @@ app.get("/admin/products", function(req, res) {
   });
 });
 
+
+app.post("/admin/productchange", function(req,res){
+
+  
+  connection.query(`UPDATE products SET ${req.body.value}="${req.body.input}" WHERE id = ${req.body.id}`, function(err,result){
+    if(err) throw err;
+    res.end();
+  }
+  
+  )
+
+});
+
+
 app.get("/*", function(req, res) {
   res.sendFile(path.join(__dirname, "/public/index.html"));
 });
@@ -112,5 +126,5 @@ app.get("/*", function(req, res) {
 // Listener
 // ===========================================================
 app.listen(PORT, function() {
-  console.log("App listening on PORT " + PORT);
+  console.log("App listening on PORT localhost:" + PORT);
 });

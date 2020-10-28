@@ -1,7 +1,10 @@
 
+
 $("#create-new-product").on("click",createProductOptions);
 $("#manage-inventory").on("click",function(e){
   getInfoForInventory("id")});
+
+// Prompts the admin to determine what they would like to do.
 
 function createProductOptions(){
   $("#form-container").empty();
@@ -52,6 +55,9 @@ $.get("/admin/products",function(data){
  .done(function(){createInventoryDisplay(input)});
 }
 
+
+// Inventory display for admin
+
 function createInventoryDisplay(input){
   $("#form-container").empty();
 
@@ -92,6 +98,11 @@ function createInventoryDisplay(input){
     newForm.append(newDiv);
     newCol.append(newForm);
       newRow.append(newCol);
+
+    newCol=$("<th>");
+    newCol.text("Change");
+    newRow.append(newCol);
+
     newTable.append(newRow);
     
 
@@ -103,8 +114,25 @@ function createInventoryDisplay(input){
       newCol=$("<td>");
       newCol.text(productList[i][`${input}`]);
       newRow.append(newCol);
-      newTable.append(newRow);
+
+      newCol=$("<td>");
+      newCol.html(`<form>
+      <div class="form-row align-items-center">
+        <div class="col-auto">
+          <input type="text" class="form-control mb-2" id="${input}input${i}" placeholder="">
+        </div>
+        <div class="col-auto">
+          <button type="button" class="btn btn-primary mb-2" id="submit-change-${i}" data-value="${input}" data-id=${i}>Submit</button>
+        </div>
+      </div>
+    </form>`);
+    newRow.append(newCol);
+    newTable.append(newRow);
   }
+
+
+
+
 
 
   let newButtonRow=$("<div>");
@@ -125,6 +153,14 @@ function createInventoryDisplay(input){
   
   $("#form-container").append(newTable);
   $("#form-container").append(newButtonCol);
+
+  for(let i=0; i< productList.length; i++){
+  $(`#submit-change-${i}`).on("click",function(e){
+    e.preventDefault();
+    let send=$(`#${input}input${i}`).val();
+    updateProduct(this.dataset.value, i, send);
+  });}
+
   $("#product-view-field").on("change",function(e){
     createInventoryDisplay(this.value);
   });
@@ -134,14 +170,22 @@ function createInventoryDisplay(input){
 }
 
 
+function updateProduct(value, id, input){
 
+  $.ajax({
+    url: "/admin/productchange",
+    data: { "value": value, "id": (Number(id)+1), "input": input },
+    method: "Post",
+  }).then(function(err,data){
+    if(err) throw err;
+    getInfoForInventory(value);
+  }
+  );
+ 
+  
 
+}
 
-
-  // <div class="row">
-  // <button type="button" class="btn btn-primary col-m-6" id="create-new-product">Create New Product</button>
-  // <button type="button" class="btn btn-primary col-m-6" id="manage-inventory">Manage Inventory</button>
-  //   </div>
 
 
 
@@ -270,7 +314,7 @@ function sendNewWipe(){
     data: product,
     method: "Post",
   }).then(
-    console.log("sent")
+    
   );
 
 }
@@ -296,7 +340,7 @@ function sendNewDiaper(){
     data: product,
     method: "Post",
   }).then(
-    console.log("sent")
+ 
   );
 
 }
