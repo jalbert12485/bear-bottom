@@ -1,8 +1,12 @@
 
-$("#create-new-product").on("click",createProdutOptions);
-$("#manage-inventory").on("click",createInventoryOptions);
 
-function createProdutOptions(){
+$("#create-new-product").on("click",createProductOptions);
+$("#manage-inventory").on("click",function(e){
+  getInfoForInventory("name")});
+
+// Prompts the admin to determine what they would like to do.
+
+function createProductOptions(){
   $("#form-container").empty();
   let newH=$("<h3>");
   newH.text("What would you like to do?");
@@ -42,62 +46,152 @@ function createProdutOptions(){
   $("#form-container").append(newDiv);
 }
 
-function createInventoryOptions(){
+let productList;
+
+function getInfoForInventory(input){
+$.get("/admin/products",function(data){
+  productList=data;
+})
+ .done(function(){createInventoryDisplay(input)});
+}
+
+
+// Inventory display for admin
+
+function createInventoryDisplay(input){
   $("#form-container").empty();
-  let newH=$("<h3>");
-  newH.attr("style", "text-align: center;");
-  newH.text("What would you like to do?");
-  newH.addClass("m-4");
-  $("#form-container").append(newH);
 
-  let newDiv=$("<div>");
-  newDiv.addClass("row text-center");
 
-  let newDiv1=$("<div>");
-  newDiv1.addClass("col-md-6");
-  newDiv1.attr("id","restock");
-  newDiv1.on("click",function(){
+
+
+    let newH=$("<h3>");
+    newH.text("Product List");
+    newH.attr("style","text-align: center;");
+    $("#form-container").append(newH);
+
+
+
+  let newTable=$("<table>");
+
+    let newRow=$("<tr>");
+    let newCol=$("<th>");
+      newCol.text("Name");
+      newRow.append(newCol);
+      newCol=$("<th>");
+    let  newForm=$("<form>");
+    let  newDiv=$("<div>");
+    newDiv.addClass("form-group");
+    let newSelect=$("<select>");
+    newSelect.addClass("form-control");
+    newSelect.attr("id","product-view-field");
+    for(const value in productList[0]){
+      if(value != "id"){
+      let newOption=$("<option>");
+      newOption.attr("id","product-view-option");
+      newOption.text(value);
+      newOption.val(value);
+      if(value==input){
+        newOption.attr("selected",true);
+      }
+      newSelect.append(newOption);
+    }}
+    newDiv.append(newSelect);
+    newForm.append(newDiv);
+    newCol.append(newForm);
+      newRow.append(newCol);
+
+    newCol=$("<th>");
+    newCol.text("Change");
+    newRow.append(newCol);
+
+    newTable.append(newRow);
     
-  });
-  let newButton1=$("<button>");
-  newButton1.addClass("btn btn-primary");
-  newButton1.text("Restock Product");
-  newButton1.attr("type","button");
 
-  newDiv1.append(newButton1);
-  newDiv.append(newDiv1);
+  for(let i=0; i< productList.length; i++){
+      newRow=$("<tr>");
+      newCol=$("<td>");
+      newCol.text(productList[i].name);
+      newRow.append(newCol);
+      newCol=$("<td>");
+      newCol.text(productList[i][`${input}`]);
+      newRow.append(newCol);
+
+      newCol=$("<td>");
+      newCol.html(`<form>
+      <div class="form-row align-items-center">
+        <div class="col-auto">
+          <input type="text" class="form-control mb-2" id="${input}input${i}" placeholder="">
+        </div>
+        <div class="col-auto">
+          <button type="button" class="btn btn-primary mb-2" id="submit-change-${i}" data-value="${input}" data-id=${i}>Submit</button>
+        </div>
+      </div>
+    </form>`);
+    newRow.append(newCol);
+    newTable.append(newRow);
+  }
 
 
-  let newDiv2=$("<div>");
-  newDiv2.addClass("col-md-6");
-  newDiv2.attr("id","waste-product");
-  newDiv2.on("click",function(){
-    
-  });
+
+
+
+
+  let newButtonRow=$("<div>");
+  newButtonRow.addClass("row");
+  let newButtonCol=$("<div>");
+  newButtonCol.addClass("col-md-6");
   let newButton2=$("<button>");
-  newButton2.addClass("btn btn-primary");
-  newButton2.text("Waste Product");
   newButton2.attr("type","button");
+  newButton2.text("Restart");
+  newButton2.addClass("btn btn-primary");
+  newButton2.on("click",function(){
+    location.reload();
+  });
 
-  newDiv2.append(newButton2);
-  newDiv.append(newDiv2);
+  newButtonCol.append(newButton2);
+  newButtonRow.append(newButtonCol);
 
-  $("#form-container").append(newDiv);
+  
+  $("#form-container").append(newTable);
+  $("#form-container").append(newButtonCol);
+
+  for(let i=0; i< productList.length; i++){
+  $(`#submit-change-${i}`).on("click",function(e){
+    e.preventDefault();
+    let send=$(`#${input}input${i}`).val();
+    updateProduct(this.dataset.value, i, send);
+  });}
+
+  $("#product-view-field").on("change",function(e){
+    createInventoryDisplay(this.value);
+  });
+  
+
+
+}
+
+
+function updateProduct(value, id, input){
+
+  $.ajax({
+    url: "/admin/productchange",
+    data: { "value": value, "id": (Number(id)+1), "input": input },
+    method: "Post",
+  }).then(function(err,data){
+    if(err) throw err;
+    getInfoForInventory(value);
+  }
+  );
+ 
+  
+
 }
 
 
 
 
 
-  // <div class="row">
-  // <button type="button" class="btn btn-primary col-m-6" id="create-new-product">Create New Product</button>
-  // <button type="button" class="btn btn-primary col-m-6" id="manage-inventory">Manage Inventory</button>
-  //   </div>
-
-
-
-
-let adminProductInput=[["product-name","Product Name"],["short-descr","Short Description"],["long-descr","Long Description"],["image-src","Image Source"],["image-alt","Image Alt"],["inventory","Inventory"]];
+let adminProductInput=[["product-name","Product Name"],["price","Price"],["short-descr","Short Description"],["long-descr","Long Description"],["image-src","Image Source"],["image-alt","Image Alt"],["inventory","Inventory"]];
 
 let adminDiaperInput=[["size","Size"],["style","Style"],["print","Print"]];
 
@@ -164,12 +258,14 @@ function createInputForm(productType){
   newButton1.on("click", function(event){
     event.preventDefault();
     sendNewWipe();
+    location.reload();
   })
   };
   if(productType=="diaper"){
     newButton1.on("click", function(event){
       event.preventDefault();
       sendNewDiaper();
+      location.reload();
     })
     };
     newCol.append(newButton1);
@@ -203,6 +299,7 @@ $("#form-submit").on("click", function(event){
 function sendNewWipe(){
   let product={
     name: $("#product-name").val(),
+    price: $("#price").val(),
     short: $("#short-descr").val(),
     long: $("#long-descr").val(),
     imgSrc: $("#image-src").val(),
@@ -218,7 +315,7 @@ function sendNewWipe(){
     data: product,
     method: "Post",
   }).then(
-    console.log("sent")
+    
   );
 
 }
@@ -226,6 +323,7 @@ function sendNewWipe(){
 function sendNewDiaper(){
   let product={
     name: $("#product-name").val(),
+    price: $("#price").val(),
     short: $("#short-descr").val(),
     long: $("#long-descr").val(),
     imgSrc: $("#image-src").val(),
@@ -243,7 +341,7 @@ function sendNewDiaper(){
     data: product,
     method: "Post",
   }).then(
-    console.log("sent")
+ 
   );
 
 }
